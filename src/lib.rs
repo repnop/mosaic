@@ -1,6 +1,6 @@
 #![deny(missing_docs)]
 
-//! Mosiac A crate for easily drawing tiles from a tilesheet with
+//! Mosiac: A crate for easily drawing tiles from a tilesheet with
 //! [`ggez`](https://crates.io/crates/ggez).
 //!
 
@@ -145,9 +145,25 @@ impl From<(Color, graphics::Point2)> for TileParams {
 }
 
 /// Possible errors from `TileSet` operations.
+#[derive(Debug, Clone, Copy)]
 pub enum TileSetError {
     /// The tile position to register was outside the tilesheet bounds.
     OutOfRange,
     /// Tile not found.
     TileNotFound,
 }
+
+impl std::fmt::Display for TileSetError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                TileSetError::OutOfRange => "Position out of range of tilesheet dimensions",
+                TileSetError::TileNotFound => "Tile not found during lookup",
+            }
+        )
+    }
+}
+
+impl std::error::Error for TileSetError {}
